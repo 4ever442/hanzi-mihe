@@ -28,8 +28,7 @@ app = FastAPI(title="汉字迷盒")
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # 创建会话存放的目录 sessions
-if not os.path.exists("sessions"):
-    os.mkdir("sessions")
+os.makedirs("sessions", exist_ok=True)
 
 # 生成会话标识
 def create_session_id():
@@ -293,5 +292,6 @@ async def exception_handler(request: Request, exc: Exception):
 # 启动服务
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000,) # access_log=False 访问日志关闭（不建议）
+    # HF Spaces 通过环境变量 PORT 注入监听端口（默认 7860）
+    uvicorn.run(app, host="0.0.0.0", port=int(os.environ.get("PORT", 7860)))
     logging.info(create_session_id())
