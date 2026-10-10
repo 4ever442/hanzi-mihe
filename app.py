@@ -73,7 +73,9 @@ SITE_PASSWORD = os.getenv("SITE_PASSWORD", "")
 client = OpenAI(
     api_key=AGNES_API_KEY or "unset",
     base_url=AGNES_BASE_URL,
-    timeout=60.0,      # Vercel 函数执行上限 60s，这里略短，留点余量
+    # Vercel 函数 maxDuration=60s，到期会被硬杀 → 客户端没拿到结果就表现为 "Failed to fetch"。
+    # 单次 Agnes 调用压到 45s，留出余量：太慢时走下面重试 / 429 分支优雅返回，而非被 Vercel 中途杀掉。
+    timeout=45.0,
     max_retries=1,
 )
 
