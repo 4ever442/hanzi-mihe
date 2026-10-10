@@ -1,6 +1,18 @@
 # 密钥文件，禁止提交
 .env
 
+# Vercel 构建产物（不要上传）
+.vercel/
+
 # Python 缓存
 __pycache__/
 *.pyc
+
+# 本地会话数据（Vercel 无状态方案不用它，别上传）
+sessions/
+
+# 本地验证临时文件
+_verify_reply.txt
+
+# playwright-cli 浏览器会话缓存（不要上传）
+.playwright-cli/
